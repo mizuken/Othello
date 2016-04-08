@@ -1,2 +1,1 @@
 "# Othello" 
-"# Othello" 
