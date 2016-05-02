@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 public class Board extends JPanel{
 
 
+	Point point;
+
 	//格子の表示に関する変数
 	private static final int w_size = 80; //格子1マスの横幅
 	private static final int h_size = 80; //格子1マスの縦幅
@@ -48,24 +50,38 @@ public class Board extends JPanel{
 
 		//石の表示
 		//statemanagaerクラスで管理しているゲーム状況に応じて石を出力する
-		for(int i = 0; i < board_size+2; i++){
-			for(int j = 0; j < board_size+2; j++){
-				//白石の表示
+		for(int i = 0; i < board_size+1; i++){
+			for(int j = 0; j < board_size+1; j++){
 				if(statemanager.get_stone_table(i, j) == -1){
 					g.setColor(Color.black);
-					g.fillOval(top_x+10 + (j-1)*w_size, top_y+15 + (i-1)*h_size, stone_size, stone_size);
+					g.fillOval(top_x+10 + (i-1)*w_size, top_y+15 + (j-1)*h_size, stone_size, stone_size);
 					g.setColor(Color.white);
-					g.fillOval(top_x+10 + (j-1)*w_size, top_y+10 + (i-1)*h_size, stone_size, stone_size);
+					g.fillOval(top_x+10 + (i-1)*w_size, top_y+10 + (j-1)*h_size, stone_size, stone_size);
 				}else if(statemanager.get_stone_table(i, j) == 1){
 				//黒石の表示
 					g.setColor(Color.white);
-					g.fillOval(top_x+10+ (j-1)*w_size, top_y+10+5 + (i-1)*h_size, stone_size, stone_size);
+					g.fillOval(top_x+10+ (i-1)*w_size, top_y+10+5 + (j-1)*h_size, stone_size, stone_size);
 					g.setColor(Color.black);
-					g.fillOval(top_x+10+ (j-1)*w_size, top_y+10 + (i-1)*h_size, stone_size, stone_size);
+					g.fillOval(top_x+10+ (i-1)*w_size, top_y+10 + (j-1)*h_size, stone_size, stone_size);
 				}else{
 				//特になし
 				}
 			}
 		}
+
+		//設置可能場所の表示
+
+		for(int i = 0; i < board_size+1; i++){
+			for(int j = 0; j < board_size+1; j++){
+				g.setColor(new Color(255,0,0,70));
+				if(statemanager.get_select_table(i, j) == 1){
+					g.fillRect(top_x +(i-1)*w_size, top_y+(j-1)*h_size, w_size, h_size);
+				}
+
+			}
+		}
+
+
 	}
+
 }
