@@ -2,9 +2,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
-//オセロ盤を扱うクラス
-public class Board extends JPanel{
+//オセロ盤の状態を描画するクラス
 
+
+public class Board extends JPanel{
 
 	Point point;
 
