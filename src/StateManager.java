@@ -41,7 +41,7 @@ public class StateManager {
 	Record stone_record; // 現在表示中の石の状態
 	//Record select_record = new Record(); //石を置ける状態
 	Record reverse_record; //ひっくり返す石の状態
-	Record save_record[] = new Record[64]; // ターンごとに記録をしておく
+	Record save_record[] = new Record[70]; // ターンごとに記録をしておく
 
 
 	public StateManager(){
@@ -194,11 +194,9 @@ public class StateManager {
 					if(check_reverse_stone(i,j) == true){
 						//石を置くことが可能である
 						set_select_table(i,j,POSS); //(j,i)をPOSSにする
-
 					}else{
 						//石を置くことができない
 						set_select_table(i,j,IMPOSS);
-
 					}
 				}
 			}
@@ -229,7 +227,15 @@ public class StateManager {
 	public void set_pass_table(){
 		for(int i = 0; i < table_size+2;i++){
 			for(int j = 0; j < table_size+2; j++){
-				 if(stone_record.get_table(i,j) == EMPTY) set_select_table(i,j,POSS);//からなら可能に
+				 if(stone_record.get_table(i,j) == EMPTY){
+					for(int s = -1; s <= 1; s++){
+						for(int t = -1; t <= 1; t++){
+							if(stone_record.get_table(i, j) == BLACK || stone_record.get_table(i, j) == WHITE){
+								set_select_table(i,j,POSS);//周りに石があればおけることにする
+							}
+						}
+					}
+				 }
 			}
 		}
 		board.repaint();
@@ -346,7 +352,6 @@ public class StateManager {
 		for(int i =0; i < 10; i++){
 			for(int j = 0; j < 10; j++){
 				this.save_record[turn].record_table[i][j] = this.stone_record.record_table[i][j];
-
 			}
 		}
 	}
@@ -357,7 +362,6 @@ public class StateManager {
 			for(int i =0; i < 10; i++){
 				for(int j = 0; j < 10; j++){
 					this.stone_record.record_table[i][j] = this.save_record[turn].record_table[i][j];
-
 				}
 			}
 		}

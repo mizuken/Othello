@@ -68,7 +68,7 @@ public class OthelloMain extends JFrame implements ActionListener {
 		player1.set_statemanager(statemanager);
 		player2.set_statemanager(statemanager);
 		player1.set_player_state(1);
-		player2.set_player_state(1);
+		player2.set_player_state(0);
 		//クリックされたときや動かしているときの処理
 		board.requestFocusInWindow();
 		board.addMouseListener(
@@ -98,13 +98,14 @@ public class OthelloMain extends JFrame implements ActionListener {
 					if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
 							//右
 							System.out.println("右クリック");
-							int reroad = statemanager.get_turn_count()-1;
+							int reroad = statemanager.get_turn_count()-2;
 							if(reroad > 0){
 							statemanager.get_stone_record(reroad);
 							statemanager.down_turn_count();
+							statemanager.down_turn_count();
 							statemanager.check_select_table();
 							statemanager.start_reroad();
-							statemanager.set_turn(statemanager.get_turn()*-1);
+							//statemanager.set_turn(statemanager.get_turn()*-1);
 							repaint();
 							}
 						}
@@ -151,7 +152,7 @@ public class OthelloMain extends JFrame implements ActionListener {
 		//statemanager.print_score();
 		statemanager.save_stone_record(statemanager.get_turn_count());
 		statemanager.up_turn_count();
-		while(statemanager.get_turn_count() != 64){
+		while(statemanager.get_turn_count() != 70){
 
 			System.out.println("| game_now turn:"+statemanager.get_turn_count()+"|");
 			statemanager.set_score();
@@ -171,13 +172,13 @@ public class OthelloMain extends JFrame implements ActionListener {
 				board.repaint();
 				if(statemanager.isPass() == true){
 					//人間であるかないか
-					//System.out.println("black_ok");
 					//相手がパスならば選択テーブルの変更
+					/*
 					if(statemanager.get_pass_player() == statemanager.get_turn()*-1){
 						System.out.println("get white pass");
 						statemanager.set_pass_table();
 					}
-
+					 */
 					if(player1.get_player_state(player1) == 0){
 						//System.out.println("wait_black_putting");
 						while(true){
@@ -206,9 +207,15 @@ public class OthelloMain extends JFrame implements ActionListener {
 							// TODO 自動生成された catch ブロック
 							e.printStackTrace();
 						}
+
 						statemanager.check_select_table();
+						if(statemanager.get_pass_player() == statemanager.get_turn()*-1){
+							System.out.println("get white pass in cpu");
+						//	statemanager.set_pass_table();
+						}
 						//ここにCPUによる違いを決める
-						player1.randum_set(point);
+						//player1.randum_set(point);
+						player1.cpu_set_by_weight(point);
 						System.out.println("x:"+point.get_x_point()+"y:"+point.get_y_point());
 						statemanager.put_stone(point.get_x_point(),point.get_y_point());
 						//のちにひっくり返す
@@ -231,6 +238,7 @@ public class OthelloMain extends JFrame implements ActionListener {
 
 				System.out.println("turn_black_finish:");
 			}else
+
 			if (statemanager.get_turn() == -1){
 				//後手の処理(白色)
 				//System.out.println("turn_white");
@@ -239,12 +247,12 @@ public class OthelloMain extends JFrame implements ActionListener {
 				//人間であるかないか
 					//System.out.println("white_ok");
 					//相手がパスならば選択テーブルの変更
-
+					/*
 					if(statemanager.get_pass_player() == statemanager.get_turn()*-1){
 						System.out.println("get black pass");
 						statemanager.set_pass_table();
 					}
-
+					*/
 					if(player2.get_player_state(player2) == 0){
 						//System.out.println("wait_white_putting");
 						while(true){
@@ -274,7 +282,12 @@ public class OthelloMain extends JFrame implements ActionListener {
 							e.printStackTrace();
 						}
 						statemanager.check_select_table();
-						player2.randum_set(point);
+
+						if(statemanager.get_pass_player() == statemanager.get_turn()*-1){
+							System.out.println("get black pass in cpu");
+							//statemanager.set_pass_table();
+						}
+						player2.cpu_set_by_weight(point);
 						System.out.println("x:"+point.get_x_point()+"y:"+point.get_y_point());
 						statemanager.put_stone(point.get_x_point(),point.get_y_point());
 						//のちにひっくり返す
